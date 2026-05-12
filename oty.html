@@ -35,6 +35,33 @@
       color: #2f5d8c;
       font-size: 16px;
     }
+    .photo-timeline {
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding: 24px 0 8px;
+}
+
+.photo-timeline figure {
+  margin: 0;
+  text-align: center;
+  flex: 0 0 180px;
+}
+
+.photo-timeline img {
+  width: 180px;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.photo-timeline figcaption {
+  margin-top: 8px;
+  font-size: 15px;
+  color: #555;
+}
 
     nav a:hover,
     nav a.active {
@@ -98,7 +125,20 @@
   <main>
    
   <h1>Over The Years</h1>
-  <p>INSERT PICTURES</p>
+
+<section class="photo-timeline">
+  <figure>
+    <img src="images/Ruth 4.JPG" alt="1st Year Ph.D.">
+    <figcaption>2023</figcaption>
+  </figure>
+
+  <figure>
+    <img src="images/IMG_6712.JPG" alt="3rd Year Ph.D">
+    <figcaption>2025</figcaption>
+  </figure>
+
+</section>
+
 
   </main>
 
