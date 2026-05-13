@@ -150,6 +150,7 @@
   padding: 8px 12px;
   border: 1px solid #ddd;
   background: #fff;
+  transform: translateX(0);
   transition: transform 2.4s ease-out;
 }
 
@@ -190,43 +191,52 @@
   </style>
 </head>
 
-
-  <script>
+<script>
   function startReviewRace() {
     const runners = document.querySelectorAll(".review-runner");
     const winnerText = document.getElementById("raceWinner");
     const track = document.getElementById("raceTrack");
+    const finishLine = track.querySelector(".finish-line");
 
     winnerText.textContent = "";
 
     runners.forEach(runner => {
       runner.classList.remove("racing");
-      runner.style.transform = "translateX(0)";
+      runner.style.removeProperty("--race-distance");
+      runner.style.transitionDuration = "0s";
     });
 
-    const trackWidth = track.clientWidth;
-    const finishDistance = trackWidth - 360;
+    // Force browser to register the reset before racing again.
+    track.offsetHeight;
 
+    const finishX = finishLine.offsetLeft - 16;
     const winnerIndex = Math.floor(Math.random() * runners.length);
 
-    setTimeout(() => {
-      runners.forEach((runner, index) => {
-        const distance =
-          index === winnerIndex
-            ? finishDistance
-            : finishDistance - Math.floor(Math.random() * 120 + 40);
+    runners.forEach((runner, index) => {
+      const maxDistance = Math.max(0, finishX - runner.offsetWidth);
 
-        runner.style.setProperty("--race-distance", distance + "px");
-        runner.classList.add("racing");
-      });
-    }, 100);
+      const distance =
+        index === winnerIndex
+          ? maxDistance
+          : Math.max(0, maxDistance - Math.floor(Math.random() * 120 + 35));
+
+      runner.style.setProperty("--race-distance", distance + "px");
+      runner.style.transitionDuration = (2.1 + Math.random() * 0.7) + "s";
+    });
+
+    track.offsetHeight;
+
+    runners.forEach(runner => {
+      runner.classList.add("racing");
+    });
 
     setTimeout(() => {
-      const winnerComment = runners[winnerIndex].innerText;
-      winnerText.textContent = "Winning review: " + winnerComment;
-    }, 2600);
+      winnerText.textContent =
+        "Winning review: " + runners[winnerIndex].innerText;
+    }, 3000);
   }
 </script>
+
 
   
 <body>
