@@ -100,7 +100,74 @@
   font-style: italic;
 }
 
-    
+    .review-race-section {
+  margin-top: 44px;
+}
+
+.race-button {
+  border: 1px solid #2f5d8c;
+  background: #fff;
+  color: #2f5d8c;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.race-button:hover {
+  background: #f3f7fb;
+}
+
+.race-track {
+  position: relative;
+  margin-top: 24px;
+  padding: 18px 54px 18px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.finish-line {
+  position: absolute;
+  top: 0;
+  right: 28px;
+  width: 3px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    #222,
+    #222 8px,
+    #fff 8px,
+    #fff 16px
+  );
+}
+
+.review-runner {
+  position: relative;
+  width: max-content;
+  max-width: 300px;
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  transition: transform 2.4s ease-out;
+}
+
+.review-runner span {
+  font-size: 14px;
+  color: #333;
+}
+
+.review-runner.racing {
+  transform: translateX(var(--race-distance));
+}
+
+.race-winner {
+  margin-top: 16px;
+  color: #555;
+  font-style: italic;
+}
+
     footer {
       margin-top: 60px;
       padding: 24px;
@@ -123,6 +190,45 @@
   </style>
 </head>
 
+
+  <script>
+  function startReviewRace() {
+    const runners = document.querySelectorAll(".review-runner");
+    const winnerText = document.getElementById("raceWinner");
+    const track = document.getElementById("raceTrack");
+
+    winnerText.textContent = "";
+
+    runners.forEach(runner => {
+      runner.classList.remove("racing");
+      runner.style.transform = "translateX(0)";
+    });
+
+    const trackWidth = track.clientWidth;
+    const finishDistance = trackWidth - 360;
+
+    const winnerIndex = Math.floor(Math.random() * runners.length);
+
+    setTimeout(() => {
+      runners.forEach((runner, index) => {
+        const distance =
+          index === winnerIndex
+            ? finishDistance
+            : finishDistance - Math.floor(Math.random() * 120 + 40);
+
+        runner.style.setProperty("--race-distance", distance + "px");
+        runner.classList.add("racing");
+      });
+    }, 100);
+
+    setTimeout(() => {
+      const winnerComment = runners[winnerIndex].innerText;
+      winnerText.textContent = "Winning review: " + winnerComment;
+    }, 2600);
+  }
+</script>
+
+  
 <body>
 
   <header>
@@ -158,6 +264,30 @@
     </ul>
   </section>
 </main>
+
+  <section class="review-race-section">
+  <h2>Student Reviews</h2>
+
+  <button class="race-button" onclick="startReviewRace()">Start Review Race</button>
+
+  <div class="race-track" id="raceTrack">
+    <div class="finish-line"></div>
+
+    <div class="review-runner">
+      <span>“Explains concepts clearly and makes section approachable.”</span>
+    </div>
+
+    <div class="review-runner">
+      <span>“Very patient and responsive to questions.”</span>
+    </div>
+
+    <div class="review-runner">
+      <span>“Helped me understand the intuition behind the models.”</span>
+    </div>
+  </div>
+
+  <p id="raceWinner" class="race-winner"></p>
+</section>
 
 
   <footer>
